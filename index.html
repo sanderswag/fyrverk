@@ -2,17 +2,17 @@
 <html lang="no">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fyrverkeri – prisliste (hurtigoppslag)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Fyrverkeri – hurtigoppslag</title>
   <style>
     :root {
-      --bg: #0b0f1a;
-      --card: rgba(255,255,255,0.06);
+      --bg: #0b1020;
+      --panel: rgba(255,255,255,0.06);
       --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.65);
+      --muted: rgba(255,255,255,0.62);
       --border: rgba(255,255,255,0.12);
-      --shadow: 0 10px 30px rgba(0,0,0,0.35);
-      --radius: 16px;
+      --shadow: 0 16px 40px rgba(0,0,0,0.35);
+      --radius: 18px;
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
     }
     * { box-sizing: border-box; }
@@ -20,258 +20,276 @@
       margin: 0;
       font-family: var(--font);
       color: var(--text);
-      background: radial-gradient(1200px 600px at 20% 0%, rgba(77, 99, 255, 0.35), transparent 60%),
-                  radial-gradient(900px 500px at 100% 20%, rgba(255, 111, 77, 0.30), transparent 55%),
-                  var(--bg);
+      background:
+        radial-gradient(1100px 520px at 15% 0%, rgba(77, 99, 255, 0.35), transparent 60%),
+        radial-gradient(900px 520px at 100% 20%, rgba(255, 111, 77, 0.30), transparent 55%),
+        var(--bg);
       min-height: 100vh;
     }
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 22px 18px 40px; }
-    header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-    h1 { font-size: 22px; line-height: 1.1; margin: 0; letter-spacing: 0.2px; }
-    .sub { margin-top: 6px; color: var(--muted); font-size: 13px; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 10px; border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04); border-radius: 999px;
-      color: var(--muted); font-size: 12px; box-shadow: var(--shadow); white-space: nowrap;
+    .app { max-width: 1280px; margin: 0 auto; padding: 16px 14px 22px; }
+    header {
+      position: sticky; top: 0; z-index: 30;
+      padding: 12px 0 12px;
+      background: linear-gradient(to bottom, rgba(11,16,32,0.92), rgba(11,16,32,0.55));
+      backdrop-filter: blur(10px);
     }
-    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; margin: 14px 0 14px; }
-    .card {
-      grid-column: span 3; background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px 14px 12px; box-shadow: var(--shadow);
+    .headrow { display:flex; align-items:flex-end; justify-content: space-between; gap: 12px; }
+    h1 { margin: 0; font-size: 20px; line-height: 1.15; letter-spacing: 0.2px; }
+    .sub { margin-top: 6px; font-size: 12px; color: var(--muted); }
+    .chip {
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 10px; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted); font-size: 12px; white-space: nowrap;
     }
-    .card .k { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-    .card .v { font-size: 18px; font-weight: 700; letter-spacing: 0.2px; }
-    .card .s { margin-top: 6px; font-size: 12px; color: var(--muted); line-height: 1.35; }
 
-    .controls {
-      display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 10px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow); margin-bottom: 12px;
+    .layout { display: grid; grid-template-columns: 420px 1fr; gap: 14px; margin-top: 12px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
-    .control { display: flex; flex-direction: column; gap: 6px; }
-    label { font-size: 12px; color: var(--muted); }
+
+    .panelHeader {
+      padding: 12px 12px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+    }
+    .panelHeader .title { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .searchRow { display:flex; gap: 8px; align-items:center; }
     input[type="text"], select {
-      width: 100%; padding: 10px 10px; border-radius: 12px;
-      border: 1px solid var(--border); background: rgba(10, 14, 26, 0.55);
-      color: var(--text); outline: none;
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(10,14,26,0.55);
+      color: var(--text);
+      outline: none;
+      min-height: 44px;
     }
     input[type="text"]::placeholder { color: rgba(255,255,255,0.35); }
 
-    .pillrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 2px; }
-    .pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 10px; border-radius: 999px; border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04); font-size: 12px; color: var(--muted);
+    .list { max-height: calc(100vh - 220px); overflow: auto; -webkit-overflow-scrolling: touch; }
+    .item {
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display:flex; justify-content: space-between; gap: 12px;
       cursor: pointer; user-select: none;
     }
-    .pill.active { background: rgba(255,255,255,0.10); color: var(--text); }
+    .item:hover { background: rgba(255,255,255,0.05); }
+    .item.active { background: rgba(255,255,255,0.08); }
 
-    .tablewrap {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    .itemLeft { min-width: 0; }
+    .itemName {
+      font-weight: 650; line-height: 1.2; margin-bottom: 6px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
-    table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
-    thead th {
-      position: sticky; top: 0; background: rgba(10, 14, 26, 0.92); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border); padding: 10px 10px; text-align: left;
-      color: var(--muted); font-weight: 600; cursor: pointer; user-select: none; white-space: nowrap;
+    .itemMeta { display:flex; gap: 10px; align-items:center; color: var(--muted); font-size: 12px; flex-wrap: wrap; }
+
+    .pill {
+      display:inline-flex; align-items:center; gap: 7px;
+      padding: 6px 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      white-space: nowrap;
     }
-    tbody td { padding: 10px 10px; border-bottom: 1px solid rgba(255,255,255,0.07); vertical-align: top; }
-    tbody tr:hover { background: rgba(255,255,255,0.06); }
-
-    .name { font-weight: 650; color: var(--text); }
-    .num { font-variant-numeric: tabular-nums; text-align: right; }
-
-    .margin { display: inline-flex; align-items: center; gap: 8px; min-width: 84px; justify-content: flex-end;
-              font-variant-numeric: tabular-nums; }
-    .dot { width: 10px; height: 10px; border-radius: 999px; display: inline-block; border: 1px solid rgba(255,255,255,0.18); }
+    .dot {
+      width: 10px; height: 10px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      display:inline-block;
+    }
     .m-high .dot { background: rgba(45, 212, 191, 0.95); }
     .m-mid  .dot { background: rgba(250, 204, 21, 0.95); }
     .m-low  .dot { background: rgba(251, 113, 133, 0.95); }
 
-    .footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 12px; flex-wrap: wrap; }
-    .btn { border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text);
-           padding: 9px 12px; border-radius: 12px; cursor: pointer; font-size: 12px; }
+    .priceRight {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      flex: 0 0 auto;
+      color: var(--text);
+      font-weight: 650;
+    }
+    .priceRight .muted {
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .detail { padding: 14px; }
+    .detailTop {
+      display:flex; justify-content: space-between; gap: 12px; align-items:flex-start;
+      padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .detailName { font-size: 18px; font-weight: 750; line-height: 1.2; margin: 0 0 6px 0; }
+    .detailHint { color: var(--muted); font-size: 12px; }
+
+    .kpis { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+    .kpi {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .kpi .k { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .kpi .v { font-weight: 800; font-size: 16px; font-variant-numeric: tabular-nums; }
+
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+    .row {
+      display:flex; justify-content: space-between; gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+    }
+    .row .k { color: var(--muted); font-size: 12px; line-height: 1.25; }
+    .row .v { font-variant-numeric: tabular-nums; font-weight: 700; text-align:right; }
+
+    .actions { display:flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+    .btn {
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 12px;
+      min-height: 44px;
+    }
     .btn:hover { background: rgba(255,255,255,0.08); }
 
-    @media (max-width: 1050px) {
-      .card { grid-column: span 6; }
-      .controls { grid-template-columns: 1fr 1fr; }
+    .mobileBar { display:none; gap: 8px; align-items:center; margin-top: 10px; }
+    .mobileBack {
+      display:none; align-items:center; gap: 8px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 11px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      min-height: 44px;
+      font-size: 12px;
+      white-space: nowrap;
     }
-    @media (max-width: 650px) {
-      header { flex-direction: column; align-items: flex-start; }
-      .card { grid-column: span 12; }
-      .controls { grid-template-columns: 1fr; }
+
+    .sheet { position: fixed; inset: 0; display:none; z-index: 60; }
+    .sheetBackdrop { position:absolute; inset:0; background: rgba(0,0,0,0.55); }
+    .sheetPanel {
+      position:absolute; left: 0; right: 0; bottom: 0;
+      border-radius: 22px 22px 0 0;
+      background: rgba(11,16,32,0.96);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 -20px 60px rgba(0,0,0,0.55);
+      max-height: 88vh;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 10px 12px 16px;
+    }
+    .grab { width: 46px; height: 5px; border-radius: 999px; background: rgba(255,255,255,0.20); margin: 6px auto 10px; }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 360px 1fr; }
+      .kpis { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 740px) {
+      .layout { grid-template-columns: 1fr; }
+      .list { max-height: none; }
+      .detailPanelDesktop { display:none; }
+      .mobileBar { display:flex; }
+      .chip { display:none; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="app">
     <header>
-      <div>
-        <h1>Fyrverkeri – prisliste (hurtigoppslag)</h1>
-        <div class="sub">Søk, filtrer og sorter. Margin fargekodes (grønn = høy, gul = middels, rød = lav).</div>
+      <div class="headrow">
+        <div>
+          <h1>Fyrverkeri – hurtigoppslag</h1>
+          <div class="sub">Trykk på et produkt for å se alle priser og detaljer.</div>
+        </div>
+        <div class="chip" id="statusChip">–</div>
       </div>
-      <div class="badge" id="updatedBadge">Excel → HTML • Klar</div>
+
+      <div class="mobileBar">
+        <button class="mobileBack" id="mobileBackBtn">Tilbake</button>
+        <div class="chip" id="mobileCount">–</div>
+      </div>
     </header>
 
-    <section class="grid">
-      <div class="card">
-        <div class="k">Antall varer</div>
-        <div class="v">38</div>
-        <div class="s">Totalt i listen.</div>
-      </div>
-      <div class="card">
-        <div class="k">Snitt margin</div>
-        <div class="v">70.0%</div>
-        <div class="s">Median: 70.0%</div>
-      </div>
-      <div class="card">
-        <div class="k">Høyest fortjeneste</div>
-        <div class="v">3850 kr</div>
-        <div class="s">Trippel xxx (Kasse 3 i 1)</div>
-      </div>
-      <div class="card">
-        <div class="k">Lavest margin</div>
-        <div class="v">70.0%</div>
-        <div class="s">Spooky 25 skudd     Se pris                                             (Multibuy - 499)</div>
-      </div>
-    </section>
-
-    <section class="controls">
-      <div class="control">
-        <label for="search">Søk (navn)</label>
-        <input id="search" type="text" placeholder="Søk etter produkt…" />
-      </div>
-
-      <div class="control">
-        <label for="marginFilter">Margin filter</label>
-        <select id="marginFilter">
-          <option value="all">Alle</option>
-          <option value="high">Høy (≥ 60%)</option>
-          <option value="mid">Middels (40–59.9%)</option>
-          <option value="low">Lav (&lt; 40%)</option>
-        </select>
-      </div>
-
-      <div class="control">
-        <label for="priceFilter">Utpris (ink mva)</label>
-        <select id="priceFilter">
-          <option value="all">Alle</option>
-          <option value="0-99">0–99</option>
-          <option value="100-299">100–299</option>
-          <option value="300-599">300–599</option>
-          <option value="600-999">600–999</option>
-          <option value="1000+">1000+</option>
-        </select>
-      </div>
-
-      <div class="control">
-        <label>Hurtigvalg</label>
-        <div class="pillrow">
-          <div class="pill" id="pillTopProfit" title="Sorter på fortjeneste (høyest først)">Topp fortjeneste</div>
-          <div class="pill" id="pillTopMargin" title="Sorter på margin (høyest først)">Topp margin</div>
-          <div class="pill" id="pillReset" title="Nullstill søk/filtre/sortering">Reset</div>
+    <main class="layout">
+      <section class="panel" aria-label="Produkter">
+        <div class="panelHeader">
+          <div class="title">Produkter</div>
+          <div class="searchRow">
+            <input id="search" type="text" placeholder="Søk navn…" inputmode="search" />
+            <select id="marginFilter" aria-label="Margin filter" style="max-width: 160px;">
+              <option value="all">Alle</option>
+              <option value="high">Høy ≥60%</option>
+              <option value="mid">40–59.9%</option>
+              <option value="low">Lav &lt;40%</option>
+            </select>
+          </div>
         </div>
-      </div>
-    </section>
+        <div class="list" id="list"></div>
+      </section>
 
-    <div class="tablewrap">
-      <table id="tbl">
-        <thead>
-          <tr>
-            <th data-key="Navn" data-type="text">Produkt</th>
-            <th data-key="Innpris" data-type="num" style="text-align:right">Innpris</th>
-            <th data-key="Utpris (ink mva)" data-type="num" style="text-align:right">Utpris</th>
-            <th data-key="Reel profit" data-type="num" style="text-align:right">Fortjeneste</th>
-            <th data-key="Margin %" data-type="num" style="text-align:right">Margin</th>
-            <th data-key="Markup x (Ut/Inn)" data-type="num" style="text-align:right">Markup</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+      <section class="panel detailPanelDesktop" aria-label="Detaljer">
+        <div class="detail" id="detailDesktop">
+          <div class="detailTop">
+            <div>
+              <div class="detailName">Velg et produkt</div>
+              <div class="detailHint">Klikk i listen for å se priser, margin, faktor osv.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-    <div class="footer">
-      <div id="countLabel">–</div>
-      <div style="display:flex; gap:8px; align-items:center;">
-        <button class="btn" id="btnCopy">Kopier synlig tabell (CSV)</button>
-        <button class="btn" id="btnPrint">Skriv ut</button>
-      </div>
+  <div class="sheet" id="sheet">
+    <div class="sheetBackdrop" id="sheetBackdrop"></div>
+    <div class="sheetPanel" role="dialog" aria-modal="true">
+      <div class="grab"></div>
+      <div id="detailMobile"></div>
     </div>
   </div>
 
 <script>
-  const DATA = [{"Navn": "Spooky 25 skudd     Se pris                                             (Multibuy - 499)", "Innpris": 40.0, "Utpris (ink mva)": 189, "Reel profit": 132.3, "Faktor m/moms ink": 4.725, "m/ moms eks": 3.307, "Margin %": 70.0, "Markup x (Ut/Inn)": 4.72}, {"Navn": "Beskyttelsesbriller Kampanje! (Fratrukket 50% rabatt)", "Innpris": 6.0, "Utpris (ink mva)": 20, "Reel profit": 14.0, "Faktor m/moms ink": 3.333, "m/ moms eks": 2.333, "Margin %": 70.0, "Markup x (Ut/Inn)": 3.33}, {"Navn": "Boom 24 skudd Multivinklet                                    (Multibuy - 999)", "Innpris": 158.0, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Faktor m/moms ink": 3.158, "m/ moms eks": 2.211, "Margin %": 70.0, "Markup x (Ut/Inn)": 3.16}, {"Navn": "Kasteknall Kat. F1 ", "Innpris": 9.25, "Utpris (ink mva)": 29, "Reel profit": 20.3, "Faktor m/moms ink": 3.135, "m/ moms eks": 2.195, "Margin %": 70.0, "Markup x (Ut/Inn)": 3.14}, {"Navn": "Hot Shot 3 pk.               ", "Innpris": 153.7, "Utpris (ink mva)": 449, "Reel profit": 314.3, "Faktor m/moms ink": 2.921, "m/ moms eks": 2.045, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.92}, {"Navn": "Dark Knight 48 skudd Multivinklet                                          (Multibuy 2299,-)", "Innpris": 639.0, "Utpris (ink mva)": 1699, "Reel profit": 1189.3, "Faktor m/moms ink": 2.659, "m/ moms eks": 1.861, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.66}, {"Navn": "Noisy 20 sk. NYHET", "Innpris": 189.0, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Faktor m/moms ink": 2.64, "m/ moms eks": 1.848, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.64}, {"Navn": "Grumpy  88 skudd ", "Innpris": 455.0, "Utpris (ink mva)": 1199, "Reel profit": 839.3, "Faktor m/moms ink": 2.635, "m/ moms eks": 1.845, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.64}, {"Navn": "Bomb shell 6 x 47mm i pakke", "Innpris": 378.0, "Utpris (ink mva)": 995, "Reel profit": 696.5, "Faktor m/moms ink": 2.632, "m/ moms eks": 1.843, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.63}, {"Navn": "Happy Spring 3 pk.                         ", "Innpris": 22.6, "Utpris (ink mva)": 59, "Reel profit": 41.3, "Faktor m/moms ink": 2.611, "m/ moms eks": 1.827, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.61}, {"Navn": "Young Guns 50 skudd                                           (Multibuy - 499)", "Innpris": 172.0, "Utpris (ink mva)": 449, "Reel profit": 314.3, "Faktor m/moms ink": 2.61, "m/ moms eks": 1.827, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.61}, {"Navn": "Deep Impact 43 skudd Multivinklet ", "Innpris": 691.0, "Utpris (ink mva)": 1799, "Reel profit": 1259.3, "Faktor m/moms ink": 2.603, "m/ moms eks": 1.822, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.6}, {"Navn": "Dynamitt Harry - Kat F1 12år!", "Innpris": 148.6, "Utpris (ink mva)": 379, "Reel profit": 265.3, "Faktor m/moms ink": 2.55, "m/ moms eks": 1.785, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.55}, {"Navn": "Speed Show 82 skudd Multivinklet  NY ", "Innpris": 710.0, "Utpris (ink mva)": 1799, "Reel profit": 1259.3, "Faktor m/moms ink": 2.534, "m/ moms eks": 1.774, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.53}, {"Navn": "Gangsta Mix - Box ", "Innpris": 110.2, "Utpris (ink mva)": 279, "Reel profit": 195.3, "Faktor m/moms ink": 2.532, "m/ moms eks": 1.772, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.53}, {"Navn": "Thunder Spesial 25 skudd", "Innpris": 98.4, "Utpris (ink mva)": 249, "Reel profit": 174.3, "Faktor m/moms ink": 2.53, "m/ moms eks": 1.771, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.53}, {"Navn": "Fireball 20 skudd 47mm med ball shell", "Innpris": 875.0, "Utpris (ink mva)": 2199, "Reel profit": 1539.3, "Faktor m/moms ink": 2.513, "m/ moms eks": 1.759, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.51}, {"Navn": "Creepy 15 sk. 42mm NYHET", "Innpris": 399.0, "Utpris (ink mva)": 999, "Reel profit": 699.3, "Faktor m/moms ink": 2.504, "m/ moms eks": 1.753, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.5}, {"Navn": "X - 1 67 skudd                 Tilbud  :kan selges for 699,-         ", "Innpris": 320.0, "Utpris (ink mva)": 799, "Reel profit": 559.3, "Faktor m/moms ink": 2.497, "m/ moms eks": 1.748, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.5}, {"Navn": "Six Sense -  35 skudd Multivinklet                          (Multibuy - 999)", "Innpris": 302.0, "Utpris (ink mva)": 749, "Reel profit": 524.3, "Faktor m/moms ink": 2.48, "m/ moms eks": 1.736, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.48}, {"Navn": "Badass 106 skudd NY Multivinklet                                        (Multibuy 2299,-)", "Innpris": 449.0, "Utpris (ink mva)": 1100, "Reel profit": 770.0, "Faktor m/moms ink": 2.45, "m/ moms eks": 1.715, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.45}, {"Navn": "Knatterkuler Kat. F1 ", "Innpris": 73.35, "Utpris (ink mva)": 179, "Reel profit": 125.3, "Faktor m/moms ink": 2.44, "m/ moms eks": 1.708, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.44}, {"Navn": "Inferno assorterte singleshot        ", "Innpris": 309.0, "Utpris (ink mva)": 749, "Reel profit": 524.3, "Faktor m/moms ink": 2.424, "m/ moms eks": 1.697, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.42}, {"Navn": "Pyrobag - 1 assortiment NYHET", "Innpris": 206.0, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Faktor m/moms ink": 2.422, "m/ moms eks": 1.696, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.42}, {"Navn": "Riaeko - TIMELESS 48 sk. NYHET", "Innpris": 999.0, "Utpris (ink mva)": 2399, "Reel profit": 1679.3, "Faktor m/moms ink": 2.401, "m/ moms eks": 1.681, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.4}, {"Navn": "Stjerneskudd 72 cm", "Innpris": 27.45, "Utpris (ink mva)": 65, "Reel profit": 45.5, "Faktor m/moms ink": 2.368, "m/ moms eks": 1.658, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.37}, {"Navn": "Sleazy 10 sk. 42mm NYHET", "Innpris": 299.0, "Utpris (ink mva)": 699, "Reel profit": 489.3, "Faktor m/moms ink": 2.338, "m/ moms eks": 1.636, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.34}, {"Navn": "Thunderbird 12 sk. 50mm Bombshell NYHET", "Innpris": 729.0, "Utpris (ink mva)": 1699, "Reel profit": 1189.3, "Faktor m/moms ink": 2.331, "m/ moms eks": 1.631, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.33}, {"Navn": "Romerlys 3 (pk) Rødt, Hvitt, Blått", "Innpris": 29.65, "Utpris (ink mva)": 69, "Reel profit": 48.3, "Faktor m/moms ink": 2.327, "m/ moms eks": 1.629, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.33}, {"Navn": "Happy Hour - 39 skudd      ", "Innpris": 129.0, "Utpris (ink mva)": 299, "Reel profit": 209.3, "Faktor m/moms ink": 2.318, "m/ moms eks": 1.622, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.32}, {"Navn": "Colorful Sky 45 skudd Lydsvak ", "Innpris": 219.45, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Faktor m/moms ink": 2.274, "m/ moms eks": 1.592, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.27}, {"Navn": "Golden Fountain (Gullfontene m/crackl./ass. farger)", "Innpris": 154.35, "Utpris (ink mva)": 349, "Reel profit": 244.3, "Faktor m/moms ink": 2.261, "m/ moms eks": 1.583, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.26}, {"Navn": "Pyrobag - 2 assortiment NYHET", "Innpris": 265.0, "Utpris (ink mva)": 599, "Reel profit": 419.3, "Faktor m/moms ink": 2.26, "m/ moms eks": 1.582, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.26}, {"Navn": "Riaeko - PYRO ADDICT-2 61 sk. NYHET", "Innpris": 899.0, "Utpris (ink mva)": 1999, "Reel profit": 1399.3, "Faktor m/moms ink": 2.224, "m/ moms eks": 1.557, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.22}, {"Navn": "Overlord 93 sk. Multivinkl. ", "Innpris": 812.0, "Utpris (ink mva)": 1799, "Reel profit": 1259.3, "Faktor m/moms ink": 2.216, "m/ moms eks": 1.551, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.22}, {"Navn": "The Beast (2 i 1)   ", "Innpris": 1811.25, "Utpris (ink mva)": 3999, "Reel profit": 2799.3, "Faktor m/moms ink": 2.208, "m/ moms eks": 1.546, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.21}, {"Navn": "Trippel xxx (Kasse 3 i 1)", "Innpris": 2600.0, "Utpris (ink mva)": 5500, "Reel profit": 3850.0, "Faktor m/moms ink": 2.115, "m/ moms eks": 1.481, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.12}, {"Navn": "Majestic Night 67 sk. Multi-vinkl.    NYHET", "Innpris": 947.0, "Utpris (ink mva)": 1999, "Reel profit": 1399.3, "Faktor m/moms ink": 2.111, "m/ moms eks": 1.478, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.11}];
-  const elBody = document.querySelector("#tbl tbody");
+  const DATA = [{"Navn": "Spooky 25 skudd     Se pris                                             (Multibuy - 499)", "Innpris": 40.0, "Utpris (ink mva)": 189, "Reel profit": 132.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 4.72, "Faktor m/moms ink": 4.725, "m/ moms eks": 3.307}, {"Navn": "Beskyttelsesbriller Kampanje! (Fratrukket 50% rabatt)", "Innpris": 6.0, "Utpris (ink mva)": 20, "Reel profit": 14.0, "Margin %": 70.0, "Markup x (Ut/Inn)": 3.33, "Faktor m/moms ink": 3.333, "m/ moms eks": 2.333}, {"Navn": "Boom 24 skudd Multivinklet                                    (Multibuy - 999)", "Innpris": 158.0, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 3.16, "Faktor m/moms ink": 3.158, "m/ moms eks": 2.211}, {"Navn": "Kasteknall Kat. F1 ", "Innpris": 9.25, "Utpris (ink mva)": 29, "Reel profit": 20.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 3.14, "Faktor m/moms ink": 3.135, "m/ moms eks": 2.195}, {"Navn": "Hot Shot 3 pk.               ", "Innpris": 153.7, "Utpris (ink mva)": 449, "Reel profit": 314.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.92, "Faktor m/moms ink": 2.921, "m/ moms eks": 2.045}, {"Navn": "Dark Knight 48 skudd Multivinklet                                          (Multibuy 2299,-)", "Innpris": 639.0, "Utpris (ink mva)": 1699, "Reel profit": 1189.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.66, "Faktor m/moms ink": 2.659, "m/ moms eks": 1.861}, {"Navn": "Noisy 20 sk. NYHET", "Innpris": 189.0, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.64, "Faktor m/moms ink": 2.64, "m/ moms eks": 1.848}, {"Navn": "Grumpy  88 skudd ", "Innpris": 455.0, "Utpris (ink mva)": 1199, "Reel profit": 839.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.64, "Faktor m/moms ink": 2.635, "m/ moms eks": 1.845}, {"Navn": "Bomb shell 6 x 47mm i pakke", "Innpris": 378.0, "Utpris (ink mva)": 995, "Reel profit": 696.5, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.63, "Faktor m/moms ink": 2.632, "m/ moms eks": 1.843}, {"Navn": "Happy Spring 3 pk.                         ", "Innpris": 22.6, "Utpris (ink mva)": 59, "Reel profit": 41.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.61, "Faktor m/moms ink": 2.611, "m/ moms eks": 1.827}, {"Navn": "Young Guns 50 skudd                                           (Multibuy - 499)", "Innpris": 172.0, "Utpris (ink mva)": 449, "Reel profit": 314.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.61, "Faktor m/moms ink": 2.61, "m/ moms eks": 1.827}, {"Navn": "Deep Impact 43 skudd Multivinklet ", "Innpris": 691.0, "Utpris (ink mva)": 1799, "Reel profit": 1259.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.6, "Faktor m/moms ink": 2.603, "m/ moms eks": 1.822}, {"Navn": "Dynamitt Harry - Kat F1 12år!", "Innpris": 148.6, "Utpris (ink mva)": 379, "Reel profit": 265.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.55, "Faktor m/moms ink": 2.55, "m/ moms eks": 1.785}, {"Navn": "Speed Show 82 skudd Multivinklet  NY ", "Innpris": 710.0, "Utpris (ink mva)": 1799, "Reel profit": 1259.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.53, "Faktor m/moms ink": 2.534, "m/ moms eks": 1.774}, {"Navn": "Gangsta Mix - Box ", "Innpris": 110.2, "Utpris (ink mva)": 279, "Reel profit": 195.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.53, "Faktor m/moms ink": 2.532, "m/ moms eks": 1.772}, {"Navn": "Thunder Spesial 25 skudd", "Innpris": 98.4, "Utpris (ink mva)": 249, "Reel profit": 174.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.53, "Faktor m/moms ink": 2.53, "m/ moms eks": 1.771}, {"Navn": "Fireball 20 skudd 47mm med ball shell", "Innpris": 875.0, "Utpris (ink mva)": 2199, "Reel profit": 1539.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.51, "Faktor m/moms ink": 2.513, "m/ moms eks": 1.759}, {"Navn": "Creepy 15 sk. 42mm NYHET", "Innpris": 399.0, "Utpris (ink mva)": 999, "Reel profit": 699.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.5, "Faktor m/moms ink": 2.504, "m/ moms eks": 1.753}, {"Navn": "X - 1 67 skudd                 Tilbud  :kan selges for 699,-         ", "Innpris": 320.0, "Utpris (ink mva)": 799, "Reel profit": 559.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.5, "Faktor m/moms ink": 2.497, "m/ moms eks": 1.748}, {"Navn": "Six Sense -  35 skudd Multivinklet                          (Multibuy - 999)", "Innpris": 302.0, "Utpris (ink mva)": 749, "Reel profit": 524.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.48, "Faktor m/moms ink": 2.48, "m/ moms eks": 1.736}, {"Navn": "Badass 106 skudd NY Multivinklet                                        (Multibuy 2299,-)", "Innpris": 449.0, "Utpris (ink mva)": 1100, "Reel profit": 770.0, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.45, "Faktor m/moms ink": 2.45, "m/ moms eks": 1.715}, {"Navn": "Knatterkuler Kat. F1 ", "Innpris": 73.35, "Utpris (ink mva)": 179, "Reel profit": 125.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.44, "Faktor m/moms ink": 2.44, "m/ moms eks": 1.708}, {"Navn": "Inferno assorterte singleshot        ", "Innpris": 309.0, "Utpris (ink mva)": 749, "Reel profit": 524.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.42, "Faktor m/moms ink": 2.424, "m/ moms eks": 1.697}, {"Navn": "Pyrobag - 1 assortiment NYHET", "Innpris": 206.0, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.42, "Faktor m/moms ink": 2.422, "m/ moms eks": 1.696}, {"Navn": "Riaeko - TIMELESS 48 sk. NYHET", "Innpris": 999.0, "Utpris (ink mva)": 2399, "Reel profit": 1679.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.4, "Faktor m/moms ink": 2.401, "m/ moms eks": 1.681}, {"Navn": "Stjerneskudd 72 cm", "Innpris": 27.45, "Utpris (ink mva)": 65, "Reel profit": 45.5, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.37, "Faktor m/moms ink": 2.368, "m/ moms eks": 1.658}, {"Navn": "Sleazy 10 sk. 42mm NYHET", "Innpris": 299.0, "Utpris (ink mva)": 699, "Reel profit": 489.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.34, "Faktor m/moms ink": 2.338, "m/ moms eks": 1.636}, {"Navn": "Thunderbird 12 sk. 50mm Bombshell NYHET", "Innpris": 729.0, "Utpris (ink mva)": 1699, "Reel profit": 1189.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.33, "Faktor m/moms ink": 2.331, "m/ moms eks": 1.631}, {"Navn": "Romerlys 3 (pk) Rødt, Hvitt, Blått", "Innpris": 29.65, "Utpris (ink mva)": 69, "Reel profit": 48.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.33, "Faktor m/moms ink": 2.327, "m/ moms eks": 1.629}, {"Navn": "Happy Hour - 39 skudd      ", "Innpris": 129.0, "Utpris (ink mva)": 299, "Reel profit": 209.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.32, "Faktor m/moms ink": 2.318, "m/ moms eks": 1.622}, {"Navn": "Colorful Sky 45 skudd Lydsvak ", "Innpris": 219.45, "Utpris (ink mva)": 499, "Reel profit": 349.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.27, "Faktor m/moms ink": 2.274, "m/ moms eks": 1.592}, {"Navn": "Golden Fountain (Gullfontene m/crackl./ass. farger)", "Innpris": 154.35, "Utpris (ink mva)": 349, "Reel profit": 244.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.26, "Faktor m/moms ink": 2.261, "m/ moms eks": 1.583}, {"Navn": "Pyrobag - 2 assortiment NYHET", "Innpris": 265.0, "Utpris (ink mva)": 599, "Reel profit": 419.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.26, "Faktor m/moms ink": 2.26, "m/ moms eks": 1.582}, {"Navn": "Riaeko - PYRO ADDICT-2 61 sk. NYHET", "Innpris": 899.0, "Utpris (ink mva)": 1999, "Reel profit": 1399.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.22, "Faktor m/moms ink": 2.224, "m/ moms eks": 1.557}, {"Navn": "Overlord 93 sk. Multivinkl. ", "Innpris": 812.0, "Utpris (ink mva)": 1799, "Reel profit": 1259.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.22, "Faktor m/moms ink": 2.216, "m/ moms eks": 1.551}, {"Navn": "The Beast (2 i 1)   ", "Innpris": 1811.25, "Utpris (ink mva)": 3999, "Reel profit": 2799.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.21, "Faktor m/moms ink": 2.208, "m/ moms eks": 1.546}, {"Navn": "Trippel xxx (Kasse 3 i 1)", "Innpris": 2600.0, "Utpris (ink mva)": 5500, "Reel profit": 3850.0, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.12, "Faktor m/moms ink": 2.115, "m/ moms eks": 1.481}, {"Navn": "Majestic Night 67 sk. Multi-vinkl.    NYHET", "Innpris": 947.0, "Utpris (ink mva)": 1999, "Reel profit": 1399.3, "Margin %": 70.0, "Markup x (Ut/Inn)": 2.11, "Faktor m/moms ink": 2.111, "m/ moms eks": 1.478}];
+
+  const listEl = document.querySelector("#list");
   const searchEl = document.querySelector("#search");
   const marginFilterEl = document.querySelector("#marginFilter");
-  const priceFilterEl = document.querySelector("#priceFilter");
-  const countLabel = document.querySelector("#countLabel");
 
-  const pillTopProfit = document.querySelector("#pillTopProfit");
-  const pillTopMargin = document.querySelector("#pillTopMargin");
-  const pillReset = document.querySelector("#pillReset");
+  const detailDesktop = document.querySelector("#detailDesktop");
+  const sheet = document.querySelector("#sheet");
+  const sheetBackdrop = document.querySelector("#sheetBackdrop");
+  const detailMobile = document.querySelector("#detailMobile");
+  const statusChip = document.querySelector("#statusChip");
+  const mobileBackBtn = document.querySelector("#mobileBackBtn");
+  const mobileCount = document.querySelector("#mobileCount");
 
-  const btnCopy = document.querySelector("#btnCopy");
-  const btnPrint = document.querySelector("#btnPrint");
-
-  let sortKey = "Navn";
-  let sortDir = "asc"; // asc | desc
+  let filtered = [];
+  let selectedIndex = -1;
 
   function formatKr(v) {
     if (v === null || v === undefined || Number.isNaN(v)) return "–";
     return new Intl.NumberFormat("nb-NO", { style: "currency", currency: "NOK", maximumFractionDigits: 0 }).format(v);
   }
-
-  function marginClass(m) {
-    if (m >= 60) return "m-high";
-    if (m >= 40) return "m-mid";
-    return "m-low";
+  function fmtPct(v) {
+    if (v === null || v === undefined || Number.isNaN(v)) return "–";
+    return Number(v).toFixed(1) + "%";
   }
-
-  function priceBucket(p) {
-    if (p >= 1000) return "1000+";
-    if (p >= 600) return "600-999";
-    if (p >= 300) return "300-599";
-    if (p >= 100) return "100-299";
-    return "0-99";
+  function fmtX(v) {
+    if (v === null || v === undefined || Number.isNaN(v)) return "–";
+    return Number(v).toFixed(2) + "x";
   }
-
-  function applyFilters(rows) {
-    const q = (searchEl.value || "").trim().toLowerCase();
-    const mFilter = marginFilterEl.value;
-    const pFilter = priceFilterEl.value;
-
-    return rows.filter(r => {
-      if (q && !String(r["Navn"]).toLowerCase().includes(q)) return false;
-
-      const m = Number(r["Margin %"]);
-      if (mFilter === "high" && !(m >= 60)) return false;
-      if (mFilter === "mid" && !(m >= 40 && m < 60)) return false;
-      if (mFilter === "low" && !(m < 40)) return false;
-
-      const bucket = priceBucket(Number(r["Utpris (ink mva)"]));
-      if (pFilter !== "all" && bucket !== pFilter) return false;
-
-      return true;
-    });
-  }
-
-  function sortRows(rows) {
-    const th = document.querySelector(`th[data-key="${sortKey}"]`);
-    const type = th ? th.dataset.type : "text";
-    const dir = sortDir === "asc" ? 1 : -1;
-
-    return [...rows].sort((a,b) => {
-      const av = a[sortKey];
-      const bv = b[sortKey];
-      if (type === "num") return (Number(av) - Number(bv)) * dir;
-      return String(av).localeCompare(String(bv), "nb", { sensitivity: "base" }) * dir;
-    });
-  }
-
   function escapeHtml(s) {
     return String(s)
       .replaceAll("&","&amp;")
@@ -280,98 +298,236 @@
       .replaceAll('"',"&quot;")
       .replaceAll("'","&#039;");
   }
+  function marginClass(m) {
+    if (m >= 60) return "m-high";
+    if (m >= 40) return "m-mid";
+    return "m-low";
+  }
 
-  function render() {
-    const filtered = applyFilters(DATA);
-    const sorted = sortRows(filtered);
+  function applyFilters() {
+    const q = (searchEl.value || "").trim().toLowerCase();
+    const mf = marginFilterEl.value;
 
-    elBody.innerHTML = "";
-    for (const r of sorted) {
+    filtered = DATA.filter(r => {
+      const name = String(r["Navn"] ?? "").toLowerCase();
+      if (q && !name.includes(q)) return false;
       const m = Number(r["Margin %"]);
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td><div class="name">${escapeHtml(r["Navn"])}</div></td>
-        <td class="num">${formatKr(Number(r["Innpris"]))}</td>
-        <td class="num">${formatKr(Number(r["Utpris (ink mva)"]))}</td>
-        <td class="num">${formatKr(Number(r["Reel profit"]))}</td>
-        <td class="num"><span class="margin ${marginClass(m)}"><span class="dot"></span><span>${m.toFixed(1)}%</span></span></td>
-        <td class="num">${Number(r["Markup x (Ut/Inn)"]).toFixed(2)}x</td>
+      if (mf === "high" && !(m >= 60)) return false;
+      if (mf === "mid" && !(m >= 40 && m < 60)) return false;
+      if (mf === "low" && !(m < 40)) return false;
+      return true;
+    });
+
+    filtered.sort((a,b) => String(a["Navn"]).localeCompare(String(b["Navn"]), "nb", { sensitivity:"base" }));
+
+    renderList();
+    updateCounts();
+  }
+
+  function renderList() {
+    listEl.innerHTML = "";
+    if (filtered.length === 0) {
+      listEl.innerHTML = `<div style="padding:14px;color:rgba(255,255,255,0.7);">Ingen treff.</div>`;
+      return;
+    }
+
+    filtered.forEach((r, idx) => {
+      const m = Number(r["Margin %"]);
+      const el = document.createElement("div");
+      el.className = "item" + (idx === selectedIndex ? " active" : "");
+      el.innerHTML = `
+        <div class="itemLeft">
+          <div class="itemName">${escapeHtml(r["Navn"] ?? "")}</div>
+          <div class="itemMeta">
+            <span class="pill ${marginClass(m)}"><span class="dot"></span><span>${fmtPct(m)}</span></span>
+            <span class="pill">Profit: ${formatKr(Number(r["Reel profit"]))}</span>
+          </div>
+        </div>
+        <div class="priceRight">
+          ${formatKr(Number(r["Utpris (ink mva)"]))}
+          <span class="muted">Utpris</span>
+        </div>
       `;
-      elBody.appendChild(tr);
+      el.addEventListener("click", () => selectItem(idx));
+      listEl.appendChild(el);
+    });
+  }
+
+  function detailTemplate(r, isMobile) {
+    const m = Number(r["Margin %"]);
+    const rows = [];
+
+    const fields = [
+      ["Innpris", "Innpris", (v)=>formatKr(Number(v))],
+      ["Utpris (ink mva)", "Utpris (ink mva)", (v)=>formatKr(Number(v))],
+      ["Reel profit", "Fortjeneste", (v)=>formatKr(Number(v))],
+      ["Margin %", "Margin", (v)=>fmtPct(Number(v))],
+      ["Markup x (Ut/Inn)", "Markup (Ut/Inn)", (v)=>fmtX(Number(v))],
+      ["Faktor m/moms ink", "Faktor m/moms ink", (v)=> (v===null||v===undefined||Number.isNaN(Number(v))) ? "–" : Number(v).toFixed(3)],
+      ["m/ moms eks", "m/ moms eks", (v)=> (v===null||v===undefined||Number.isNaN(Number(v))) ? "–" : Number(v).toFixed(3)],
+    ];
+
+    for (const [key,label,fmt] of fields) {
+      if (r[key] !== undefined) rows.push([label, fmt(r[key])]);
     }
 
-    countLabel.textContent = `${sorted.length} av ${DATA.length} varer vises • Sortering: ${sortKey} (${sortDir})`;
+    for (const k of Object.keys(r)) {
+      if (["Navn", ...fields.map(f=>f[0])].includes(k)) continue;
+      const v = r[k];
+      if (v === null || v === undefined || v === "") continue;
+      rows.push([k, escapeHtml(v)]);
+    }
+
+    const rowsHtml = rows.map(([k,v]) => `
+      <div class="row">
+        <div class="k">${escapeHtml(k)}</div>
+        <div class="v">${v}</div>
+      </div>
+    `).join("");
+
+    const kpisHtml = `
+      <div class="kpis">
+        <div class="kpi">
+          <div class="k">Utpris</div>
+          <div class="v">${formatKr(Number(r["Utpris (ink mva)"]))}</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Fortjeneste</div>
+          <div class="v">${formatKr(Number(r["Reel profit"]))}</div>
+        </div>
+        <div class="kpi">
+          <div class="k">Margin</div>
+          <div class="v"><span class="pill ${marginClass(m)}" style="padding:6px 10px;"><span class="dot"></span><span>${fmtPct(m)}</span></span></div>
+        </div>
+      </div>
+    `;
+
+    const actionsHtml = `
+      <div class="actions">
+        <button class="btn" onclick="copyOne(${JSON.stringify(String(r["Navn"] ?? ""))})">Kopier som tekst</button>
+        <button class="btn" onclick="copyCsvOne(${JSON.stringify(String(r["Navn"] ?? ""))})">Kopier CSV-linje</button>
+      </div>
+    `;
+
+    const topHtml = `
+      <div class="detailTop">
+        <div style="min-width:0;">
+          <div class="detailName">${escapeHtml(r["Navn"] ?? "")}</div>
+          <div class="detailHint">Scroll for mer. På mobil kan du lukke ved å trykke bakgrunnen.</div>
+        </div>
+        ${isMobile ? "" : `<div class="chip">${filtered.length} treff</div>`}
+      </div>
+    `;
+
+    return `
+      <div class="detail">
+        ${topHtml}
+        ${kpisHtml}
+        <div class="grid2">
+          ${rowsHtml}
+        </div>
+        ${actionsHtml}
+      </div>
+    `;
   }
 
-  // Sorting via header click
-  document.querySelectorAll("thead th").forEach(th => {
-    th.addEventListener("click", () => {
-      const key = th.dataset.key;
-      if (!key) return;
-      if (sortKey === key) {
-        sortDir = (sortDir === "asc") ? "desc" : "asc";
-      } else {
-        sortKey = key;
-        sortDir = (th.dataset.type === "num") ? "desc" : "asc";
-      }
-      setActivePills(null);
-      render();
-    });
-  });
+  function selectItem(idx) {
+    selectedIndex = idx;
+    renderList();
+    const r = filtered[idx];
+    if (!r) return;
 
-  function setActivePills(which) {
-    [pillTopProfit, pillTopMargin, pillReset].forEach(p => p.classList.remove("active"));
-    if (which === "profit") pillTopProfit.classList.add("active");
-    if (which === "margin") pillTopMargin.classList.add("active");
+    detailDesktop.innerHTML = detailTemplate(r, false);
+
+    if (window.matchMedia("(max-width: 740px)").matches) {
+      detailMobile.innerHTML = detailTemplate(r, true);
+      openSheet();
+    }
   }
 
-  pillTopProfit.addEventListener("click", () => {
-    sortKey = "Reel profit"; sortDir = "desc";
-    setActivePills("profit");
-    render();
-  });
+  function openSheet() {
+    sheet.style.display = "block";
+    mobileBackBtn.style.display = "inline-flex";
+  }
+  function closeSheet() {
+    sheet.style.display = "none";
+    mobileBackBtn.style.display = "none";
+  }
 
-  pillTopMargin.addEventListener("click", () => {
-    sortKey = "Margin %"; sortDir = "desc";
-    setActivePills("margin");
-    render();
-  });
+  sheetBackdrop.addEventListener("click", closeSheet);
+  mobileBackBtn.addEventListener("click", closeSheet);
 
-  pillReset.addEventListener("click", () => {
-    searchEl.value = "";
-    marginFilterEl.value = "all";
-    priceFilterEl.value = "all";
-    sortKey = "Navn"; sortDir = "asc";
-    setActivePills(null);
-    render();
-  });
+  function updateCounts() {
+    const text = `${filtered.length} av ${DATA.length} produkter`;
+    mobileCount.textContent = text;
+    statusChip.textContent = text;
+  }
 
-  // Live filter events
-  [searchEl, marginFilterEl, priceFilterEl].forEach(el => {
-    el.addEventListener("input", () => { setActivePills(null); render(); });
-    el.addEventListener("change", () => { setActivePills(null); render(); });
-  });
-
-  btnCopy.addEventListener("click", async () => {
-    const rows = Array.from(elBody.querySelectorAll("tr")).map(tr => {
-      const cols = Array.from(tr.querySelectorAll("td")).map(td => td.innerText.replaceAll("\n"," ").trim());
-      return cols;
-    });
-    const header = ["Produkt","Innpris","Utpris","Fortjeneste","Margin","Markup"];
-    const csv = [header, ...rows].map(r => r.map(x => `"${String(x).replaceAll('"','""')}"`).join(",")).join("\n");
-
+  window.copyOne = async function(name) {
+    const r = filtered.find(x => String(x["Navn"]) === name) || DATA.find(x => String(x["Navn"]) === name);
+    if (!r) return;
+    const lines = [];
+    lines.push(String(r["Navn"] ?? ""));
+    for (const [k,v] of Object.entries(r)) {
+      if (k === "Navn") continue;
+      lines.push(`${k}: ${v}`);
+    }
     try {
-      await navigator.clipboard.writeText(csv);
-      btnCopy.textContent = "Kopiert!";
-      setTimeout(() => btnCopy.textContent = "Kopier synlig tabell (CSV)", 1200);
-    } catch (e) {
-      alert("Kunne ikke kopiere automatisk. Marker og kopier fra siden i stedet.");
+      await navigator.clipboard.writeText(lines.join("\n"));
+      toast("Kopiert");
+    } catch(e) {
+      alert("Kunne ikke kopiere automatisk.");
     }
+  }
+
+  window.copyCsvOne = async function(name) {
+    const r = filtered.find(x => String(x["Navn"]) === name) || DATA.find(x => String(x["Navn"]) === name);
+    if (!r) return;
+    const keys = ["Navn","Innpris","Utpris (ink mva)","Reel profit","Margin %","Markup x (Ut/Inn)","Faktor m/moms ink","m/ moms eks"].filter(k => r[k] !== undefined);
+    const row = keys.map(k => `"${String(r[k]).replaceAll('"','""')}"`).join(",");
+    try {
+      await navigator.clipboard.writeText(row);
+      toast("CSV kopiert");
+    } catch(e) {
+      alert("Kunne ikke kopiere automatisk.");
+    }
+  }
+
+  function toast(msg) {
+    const t = document.createElement("div");
+    t.textContent = msg;
+    t.style.position = "fixed";
+    t.style.left = "50%";
+    t.style.bottom = "22px";
+    t.style.transform = "translateX(-50%)";
+    t.style.padding = "10px 12px";
+    t.style.borderRadius = "999px";
+    t.style.background = "rgba(255,255,255,0.10)";
+    t.style.border = "1px solid rgba(255,255,255,0.16)";
+    t.style.backdropFilter = "blur(10px)";
+    t.style.color = "rgba(255,255,255,0.92)";
+    t.style.fontSize = "12px";
+    t.style.zIndex = "80";
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(), 1100);
+  }
+
+  [searchEl, marginFilterEl].forEach(el => {
+    el.addEventListener("input", applyFilters);
+    el.addEventListener("change", applyFilters);
   });
 
-  btnPrint.addEventListener("click", () => window.print());
+  applyFilters();
 
-  render();
+  if (!window.matchMedia("(max-width: 740px)").matches && filtered.length > 0) {
+    selectItem(0);
+  }
+
+  window.addEventListener("resize", () => {
+    if (!window.matchMedia("(max-width: 740px)").matches) {
+      closeSheet();
+    }
+  });
 </script>
 </body>
 </html>
